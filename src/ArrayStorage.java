@@ -3,51 +3,49 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int size = 0;
 
     void clear() {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                storage[i] = null;
-            }
+        for (int i = 0; i < size; i++) {
+
+            storage[i] = null;
+
         }
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
-            }
-        }
+
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
-        Resume result= new Resume();
+        Resume result = new Resume();
         for (Resume resume : storage) {
-            if (resume.uuid.equals(uuid)) {
+            if (resume != null && resume.uuid.equals(uuid)) {
                 result = resume;
-                break;
             }
         }
         return result;
+
     }
 
     void delete(String uuid) {
 
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                if (storage[i] == storage[size - 1]) {
+                    storage[i] = null;
+                } else {
+                    storage[i] = storage[size - 1];
+                    storage[size - 1] = null;
+                    break;
+                }
             }
         }
-        Resume [] resumeDeleted = new Resume[storage.length-1];
-        int index = 0;
-        for (Resume resume : storage) {
-            if (resume != null) {
-                resumeDeleted[index++] = resume;
-            }
-        }
-        storage = resumeDeleted;
+        size--;
     }
+
 
     /**
      * @return array, contains only Resumes in storage (without null)
@@ -61,20 +59,15 @@ public class ArrayStorage {
                 newStorage[index++] = resume;
             }
 
-        }return newStorage;
+        }
+        return newStorage;
     }
 
-        int size() {
-            int count = 0;
-            for (Resume resume : storage) {
-                if (resume != null) {
-                    count++;
-                }
-            }
+    int size() {
 
-            return count;
-        }
 
+        return size;
+    }
 
 
 }
