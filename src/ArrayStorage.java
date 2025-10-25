@@ -7,67 +7,50 @@ public class ArrayStorage {
 
     void clear() {
         for (int i = 0; i < size; i++) {
-
             storage[i] = null;
-
         }
+        size = 0;
     }
 
     void save(Resume r) {
-
         storage[size] = r;
         size++;
     }
 
     Resume get(String uuid) {
-        Resume result = new Resume();
-        for (Resume resume : storage) {
-            if (resume != null && resume.uuid.equals(uuid)) {
-                result = resume;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return storage[i];
             }
         }
-        return result;
-
+        return null;
     }
 
     void delete(String uuid) {
-
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                if (storage[i] == storage[size - 1]) {
-                    storage[i] = null;
-                } else {
-                    storage[i] = storage[size - 1];
-                    storage[size - 1] = null;
-                    break;
-                }
+                storage[i] = storage[size - 1];
+                storage[size - 1] = null;
+                size--;
             }
         }
-        size--;
     }
 
-
     /**
-     * @return array, contains only Resumes in storage (without null)
+     * @return array, contains only Resumes in storage (without null
      */
     Resume[] getAll() {
-        Resume[] newStorage = new Resume[storage.length]; // Максимальный размер
-
+        Resume[] resumes = new Resume[storage.length]; // Максимальный размер
         int index = 0;
-        for (Resume resume : storage) {
-            if (resume != null) {
-                newStorage[index++] = resume;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                resumes[index++] = storage[i];
             }
-
         }
-        return newStorage;
+        return resumes;
     }
 
     int size() {
-
-
         return size;
     }
-
-
 }
